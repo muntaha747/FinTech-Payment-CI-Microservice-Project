@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" width="1100" height="700" role="img" aria-label="09 · Payment Service: Image Scan with Trivy">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#02030a"/><stop offset=".5" stop-color="#05071a"/><stop offset="1" stop-color="#03070f"/></linearGradient>
+    <linearGradient id="tg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fb7185"/><stop offset=".35" stop-color="#fdba74"/><stop offset=".7" stop-color="#4ade80"/><stop offset="1" stop-color="#60a5fa"/></linearGradient>
+    <linearGradient id="ggold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb800"/><stop offset="1" stop-color="#ffb800" stop-opacity=".78"/></linearGradient><linearGradient id="glime" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#84cc16"/><stop offset="1" stop-color="#84cc16" stop-opacity=".78"/></linearGradient><linearGradient id="gorange" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f97316"/><stop offset="1" stop-color="#f97316" stop-opacity=".78"/></linearGradient><linearGradient id="gpink" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#db2777"/><stop offset="1" stop-color="#db2777" stop-opacity=".78"/></linearGradient><linearGradient id="gred" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e11d48"/><stop offset="1" stop-color="#e11d48" stop-opacity=".78"/></linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceAlpha" stdDeviation="3" result="b"/><feFlood flood-color="#22d3ee" flood-opacity=".8"/><feComposite in2="b" operator="in" result="h"/><feMerge><feMergeNode in="h"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <style>
+      .title { font: 900 30px 'Segoe UI', Arial, sans-serif; fill: url(#tg); }
+      .sub { font: 700 15px 'Segoe UI', Arial, sans-serif; fill: #c7d2fe; }
+      .ct { font: 900 22px 'Segoe UI', Arial, sans-serif; fill: #000000; }
+      .cs { font: 800 16px 'Segoe UI', Arial, sans-serif; fill: #000000; }
+      .lbl { font: 900 14px 'Segoe UI', Arial, sans-serif; }
+      .foot { font: 700 15px 'Segoe UI', Arial, sans-serif; fill: #c7d2fe; }
+      .flow { fill: none; stroke-width: 3.6; stroke-linecap: round; stroke-dasharray: 10 8; animation: flow .8s linear infinite; }
+      @keyframes flow { to { stroke-dashoffset: -36; } }
+      @media (prefers-reduced-motion: reduce) { .flow { animation: none; } }
+    </style>
+    <marker id="arr" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L12,6 L0,12 z" fill="#e0f2fe"/></marker>
+  </defs>
+  <rect width="1100" height="700" fill="url(#bg)"/>
+  <text x="550.0" y="44" text-anchor="middle" class="title">09 · Payment Service: Image Scan with Trivy</text>
+  <text x="550.0" y="72" text-anchor="middle" class="sub">The built image is scanned before it is pushed</text>
+  <g class="card" filter="url(#glow)"><rect x="40" y="130" width="230" height="120" rx="14" fill="url(#ggold)" stroke="#fde047" stroke-width="2.5"/></g>
+<text x="155.0" y="188.0" text-anchor="middle" class="ct" style="font-size:22.0px">Local image</text>
+<text x="155.0" y="208.7" text-anchor="middle" class="cs" style="font-size:13.5px">built in the previous stage</text>
+<g class="card" filter="url(#glow)"><rect x="310" y="130" width="230" height="120" rx="14" fill="url(#glime)" stroke="#a3e635" stroke-width="2.5"/></g>
+<text x="425.0" y="188.0" text-anchor="middle" class="ct" style="font-size:17.3px">Trivy image (full)</text>
+<text x="425.0" y="204.7" text-anchor="middle" class="cs" style="font-size:14.6px">JSON report, never blocks</text>
+<g class="card" filter="url(#glow)"><rect x="580" y="130" width="230" height="120" rx="14" fill="url(#gorange)" stroke="#fdba74" stroke-width="2.5"/></g>
+<text x="695.0" y="188.0" text-anchor="middle" class="ct" style="font-size:22.0px">Report</text>
+<text x="695.0" y="208.7" text-anchor="middle" class="cs" style="font-size:16.0px">all CVEs, fix versions</text>
+<g class="card" filter="url(#glow)"><rect x="310" y="305" width="230" height="120" rx="14" fill="url(#gred)" stroke="#fb7185" stroke-width="2.5"/></g>
+<text x="425.0" y="363.0" text-anchor="middle" class="ct" style="font-size:22.0px">Gate</text>
+<text x="425.0" y="383.7" text-anchor="middle" class="cs" style="font-size:14.6px">fixable CRITICAL → exit 1</text>
+<g class="card" filter="url(#glow)"><rect x="580" y="305" width="230" height="120" rx="14" fill="url(#gpink)" stroke="#f472b6" stroke-width="2.5"/></g>
+<text x="695.0" y="363.0" text-anchor="middle" class="ct" style="font-size:22.0px">Gate status</text>
+<text x="695.0" y="383.7" text-anchor="middle" class="cs" style="font-size:16.0px">non-blocking for now</text>
+<path id="p0" class="flow" d="M270.0,190.0 L310.0,190.0" stroke="#fde047" marker-end="url(#arr)"/>
+<path id="p1" class="flow" d="M540.0,190.0 L580.0,190.0" stroke="#a3e635" marker-end="url(#arr)"/>
+<path id="p2" class="flow" d="M425.0,250.0 L425.0,305.0" stroke="#a3e635" marker-end="url(#arr)"/>
+<path id="p3" class="flow" d="M540.0,365.0 L580.0,365.0" stroke="#fb7185" marker-end="url(#arr)"/>
+  <text x="550.0" y="648" text-anchor="middle" class="foot">Full report never blocks; it is kept for review</text><text x="550.0" y="670" text-anchor="middle" class="foot">Gate fails on fixable CRITICAL CVEs</text><text x="550.0" y="692" text-anchor="middle" class="foot">Gate is non-blocking until the base image is upgraded</text>
+  <circle r="7" fill="#fde047" opacity="1" filter="url(#glow)"><animateMotion dur="2.20s" repeatCount="indefinite" begin="0.00s"><mpath href="#p0"/></animateMotion></circle>
+<circle r="5" fill="#fde047" opacity="0.6" filter="url(#glow)"><animateMotion dur="2.20s" repeatCount="indefinite" begin="-0.18s"><mpath href="#p0"/></animateMotion></circle>
+<circle r="3.5" fill="#fde047" opacity="0.35" filter="url(#glow)"><animateMotion dur="2.20s" repeatCount="indefinite" begin="-0.36s"><mpath href="#p0"/></animateMotion></circle>
+<circle r="7" fill="#a3e635" opacity="1" filter="url(#glow)"><animateMotion dur="2.55s" repeatCount="indefinite" begin="0.30s"><mpath href="#p1"/></animateMotion></circle>
+<circle r="5" fill="#a3e635" opacity="0.6" filter="url(#glow)"><animateMotion dur="2.55s" repeatCount="indefinite" begin="0.12s"><mpath href="#p1"/></animateMotion></circle>
+<circle r="3.5" fill="#a3e635" opacity="0.35" filter="url(#glow)"><animateMotion dur="2.55s" repeatCount="indefinite" begin="-0.06s"><mpath href="#p1"/></animateMotion></circle>
+<circle r="7" fill="#a3e635" opacity="1" filter="url(#glow)"><animateMotion dur="2.90s" repeatCount="indefinite" begin="0.60s"><mpath href="#p2"/></animateMotion></circle>
+<circle r="5" fill="#a3e635" opacity="0.6" filter="url(#glow)"><animateMotion dur="2.90s" repeatCount="indefinite" begin="0.42s"><mpath href="#p2"/></animateMotion></circle>
+<circle r="3.5" fill="#a3e635" opacity="0.35" filter="url(#glow)"><animateMotion dur="2.90s" repeatCount="indefinite" begin="0.24s"><mpath href="#p2"/></animateMotion></circle>
+<circle r="7" fill="#fb7185" opacity="1" filter="url(#glow)"><animateMotion dur="3.25s" repeatCount="indefinite" begin="0.90s"><mpath href="#p3"/></animateMotion></circle>
+<circle r="5" fill="#fb7185" opacity="0.6" filter="url(#glow)"><animateMotion dur="3.25s" repeatCount="indefinite" begin="0.72s"><mpath href="#p3"/></animateMotion></circle>
+<circle r="3.5" fill="#fb7185" opacity="0.35" filter="url(#glow)"><animateMotion dur="3.25s" repeatCount="indefinite" begin="0.54s"><mpath href="#p3"/></animateMotion></circle>
+</svg>

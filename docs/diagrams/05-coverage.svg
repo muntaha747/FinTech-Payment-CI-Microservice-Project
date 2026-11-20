@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" width="1100" height="700" role="img" aria-label="05 · Payment Service: Code Coverage">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#02030a"/><stop offset=".5" stop-color="#05071a"/><stop offset="1" stop-color="#03070f"/></linearGradient>
+    <linearGradient id="tg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fb7185"/><stop offset=".35" stop-color="#fdba74"/><stop offset=".7" stop-color="#4ade80"/><stop offset="1" stop-color="#60a5fa"/></linearGradient>
+    <linearGradient id="ggold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb800"/><stop offset="1" stop-color="#ffb800" stop-opacity=".78"/></linearGradient><linearGradient id="ggreen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16a34a"/><stop offset="1" stop-color="#16a34a" stop-opacity=".78"/></linearGradient><linearGradient id="gpink" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#db2777"/><stop offset="1" stop-color="#db2777" stop-opacity=".78"/></linearGradient><linearGradient id="gpurple" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a21caf"/><stop offset="1" stop-color="#a21caf" stop-opacity=".78"/></linearGradient><linearGradient id="gsky" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0ea5e9"/><stop offset="1" stop-color="#0ea5e9" stop-opacity=".78"/></linearGradient><linearGradient id="gteal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d9488"/><stop offset="1" stop-color="#0d9488" stop-opacity=".78"/></linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceAlpha" stdDeviation="3" result="b"/><feFlood flood-color="#22d3ee" flood-opacity=".8"/><feComposite in2="b" operator="in" result="h"/><feMerge><feMergeNode in="h"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <style>
+      .title { font: 900 30px 'Segoe UI', Arial, sans-serif; fill: url(#tg); }
+      .sub { font: 700 15px 'Segoe UI', Arial, sans-serif; fill: #c7d2fe; }
+      .ct { font: 900 22px 'Segoe UI', Arial, sans-serif; fill: #000000; }
+      .cs { font: 800 16px 'Segoe UI', Arial, sans-serif; fill: #000000; }
+      .lbl { font: 900 14px 'Segoe UI', Arial, sans-serif; }
+      .foot { font: 700 15px 'Segoe UI', Arial, sans-serif; fill: #c7d2fe; }
+      .flow { fill: none; stroke-width: 3.6; stroke-linecap: round; stroke-dasharray: 10 8; animation: flow .8s linear infinite; }
+      @keyframes flow { to { stroke-dashoffset: -36; } }
+      @media (prefers-reduced-motion: reduce) { .flow { animation: none; } }
+    </style>
+    <marker id="arr" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L12,6 L0,12 z" fill="#e0f2fe"/></marker>
+  </defs>
+  <rect width="1100" height="700" fill="url(#bg)"/>
+  <text x="550.0" y="44" text-anchor="middle" class="title">05 · Payment Service: Code Coverage</text>
+  <text x="550.0" y="72" text-anchor="middle" class="sub">How much of the code the tests actually run</text>
+  <g class="card" filter="url(#glow)"><rect x="40" y="130" width="230" height="120" rx="14" fill="url(#ggreen)" stroke="#4ade80" stroke-width="2.5"/></g>
+<text x="155.0" y="188.0" text-anchor="middle" class="ct" style="font-size:22.0px">Test run</text>
+<text x="155.0" y="208.7" text-anchor="middle" class="cs" style="font-size:16.0px">tests executed in CI</text>
+<g class="card" filter="url(#glow)"><rect x="310" y="130" width="230" height="120" rx="14" fill="url(#gteal)" stroke="#2dd4bf" stroke-width="2.5"/></g>
+<text x="425.0" y="188.0" text-anchor="middle" class="ct" style="font-size:22.0px">Coverage tool</text>
+<text x="425.0" y="208.7" text-anchor="middle" class="cs" style="font-size:16.0px">records executed lines</text>
+<g class="card" filter="url(#glow)"><rect x="580" y="130" width="230" height="120" rx="14" fill="url(#gsky)" stroke="#38bdf8" stroke-width="2.5"/></g>
+<text x="695.0" y="188.0" text-anchor="middle" class="ct" style="font-size:20.8px">Coverage report</text>
+<text x="695.0" y="207.7" text-anchor="middle" class="cs" style="font-size:16.0px">XML + HTML</text>
+<g class="card" filter="url(#glow)"><rect x="850" y="130" width="230" height="120" rx="14" fill="url(#ggold)" stroke="#fde047" stroke-width="2.5"/></g>
+<text x="965.0" y="188.0" text-anchor="middle" class="ct" style="font-size:20.8px">Upload artifact</text>
+<text x="965.0" y="207.7" text-anchor="middle" class="cs" style="font-size:14.6px">downloadable from the run</text>
+<g class="card" filter="url(#glow)"><rect x="580" y="305" width="230" height="120" rx="14" fill="url(#gpurple)" stroke="#e879f9" stroke-width="2.5"/></g>
+<text x="695.0" y="363.0" text-anchor="middle" class="ct" style="font-size:22.0px">SonarCloud</text>
+<text x="695.0" y="383.7" text-anchor="middle" class="cs" style="font-size:14.6px">reads the coverage report</text>
+<g class="card" filter="url(#glow)"><rect x="310" y="305" width="230" height="120" rx="14" fill="url(#gpink)" stroke="#f472b6" stroke-width="2.5"/></g>
+<text x="425.0" y="363.0" text-anchor="middle" class="ct" style="font-size:22.0px">Dashboard</text>
+<text x="425.0" y="383.7" text-anchor="middle" class="cs" style="font-size:16.0px">coverage % and trend</text>
+<path id="p0" class="flow" d="M270.0,190.0 L310.0,190.0" stroke="#4ade80" marker-end="url(#arr)"/>
+<path id="p1" class="flow" d="M540.0,190.0 L580.0,190.0" stroke="#2dd4bf" marker-end="url(#arr)"/>
+<path id="p2" class="flow" d="M810.0,190.0 L850.0,190.0" stroke="#38bdf8" marker-end="url(#arr)"/>
+<path id="p3" class="flow" d="M695.0,250.0 L695.0,305.0" stroke="#38bdf8" marker-end="url(#arr)"/>
+<path id="p4" class="flow" d="M580.0,365.0 L540.0,365.0" stroke="#e879f9" marker-end="url(#arr)"/>
+  <text x="550.0" y="648" text-anchor="middle" class="foot">Coverage is written in a standard format for SonarCloud</text><text x="550.0" y="670" text-anchor="middle" class="foot">The report is uploaded as a downloadable artifact</text><text x="550.0" y="692" text-anchor="middle" class="foot">Low coverage shows on the SonarCloud dashboard</text>
+  <circle r="7" fill="#4ade80" opacity="1" filter="url(#glow)"><animateMotion dur="2.20s" repeatCount="indefinite" begin="0.00s"><mpath href="#p0"/></animateMotion></circle>
+<circle r="5" fill="#4ade80" opacity="0.6" filter="url(#glow)"><animateMotion dur="2.20s" repeatCount="indefinite" begin="-0.18s"><mpath href="#p0"/></animateMotion></circle>
+<circle r="3.5" fill="#4ade80" opacity="0.35" filter="url(#glow)"><animateMotion dur="2.20s" repeatCount="indefinite" begin="-0.36s"><mpath href="#p0"/></animateMotion></circle>
+<circle r="7" fill="#2dd4bf" opacity="1" filter="url(#glow)"><animateMotion dur="2.55s" repeatCount="indefinite" begin="0.30s"><mpath href="#p1"/></animateMotion></circle>
+<circle r="5" fill="#2dd4bf" opacity="0.6" filter="url(#glow)"><animateMotion dur="2.55s" repeatCount="indefinite" begin="0.12s"><mpath href="#p1"/></animateMotion></circle>
+<circle r="3.5" fill="#2dd4bf" opacity="0.35" filter="url(#glow)"><animateMotion dur="2.55s" repeatCount="indefinite" begin="-0.06s"><mpath href="#p1"/></animateMotion></circle>
+<circle r="7" fill="#38bdf8" opacity="1" filter="url(#glow)"><animateMotion dur="2.90s" repeatCount="indefinite" begin="0.60s"><mpath href="#p2"/></animateMotion></circle>
+<circle r="5" fill="#38bdf8" opacity="0.6" filter="url(#glow)"><animateMotion dur="2.90s" repeatCount="indefinite" begin="0.42s"><mpath href="#p2"/></animateMotion></circle>
+<circle r="3.5" fill="#38bdf8" opacity="0.35" filter="url(#glow)"><animateMotion dur="2.90s" repeatCount="indefinite" begin="0.24s"><mpath href="#p2"/></animateMotion></circle>
+<circle r="7" fill="#38bdf8" opacity="1" filter="url(#glow)"><animateMotion dur="3.25s" repeatCount="indefinite" begin="0.90s"><mpath href="#p3"/></animateMotion></circle>
+<circle r="5" fill="#38bdf8" opacity="0.6" filter="url(#glow)"><animateMotion dur="3.25s" repeatCount="indefinite" begin="0.72s"><mpath href="#p3"/></animateMotion></circle>
+<circle r="3.5" fill="#38bdf8" opacity="0.35" filter="url(#glow)"><animateMotion dur="3.25s" repeatCount="indefinite" begin="0.54s"><mpath href="#p3"/></animateMotion></circle>
+<circle r="7" fill="#e879f9" opacity="1" filter="url(#glow)"><animateMotion dur="2.20s" repeatCount="indefinite" begin="1.20s"><mpath href="#p4"/></animateMotion></circle>
+<circle r="5" fill="#e879f9" opacity="0.6" filter="url(#glow)"><animateMotion dur="2.20s" repeatCount="indefinite" begin="1.02s"><mpath href="#p4"/></animateMotion></circle>
+<circle r="3.5" fill="#e879f9" opacity="0.35" filter="url(#glow)"><animateMotion dur="2.20s" repeatCount="indefinite" begin="0.84s"><mpath href="#p4"/></animateMotion></circle>
+</svg>
