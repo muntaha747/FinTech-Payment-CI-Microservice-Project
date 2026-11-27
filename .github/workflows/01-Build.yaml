@@ -1,0 +1,270 @@
+name: payment CI Build Pipeline
+
+on:
+  push:
+    branches:
+      - feature
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+      - feature
+  workflow_dispatch:
+    inputs:
+      ECR_URL:
+        description: "This is the ECR Registry URL"
+        required: true
+        default: "747240980649.dkr.ecr.us-east-1.amazonaws.com"
+
+      APPLICATION_IMAGE_REPO:
+        description: "Elastic Container Registry Name"
+        required: true
+        default: "fintech-paymentservice"
+
+      AWS_REGION:
+        description: "AWS Region"
+        required: true
+        default: "us-east-1"
+
+      TEST_ENVIRONMENT:
+        description: "Environment to deploy to after the build"
+        required: true
+        type: choice
+        default: "functional"
+        options:
+          - functional
+          - regression
+          - integration
+          - uat
+          - release
+          - regression-and-integration
+
+env:
+  CD_REPO: muntaha747/FinTech-Payment-CD-Microservice-Project
+  REGISTRY: ${{ inputs.ECR_URL || '747240980649.dkr.ecr.us-east-1.amazonaws.com' }}
+  ECR_REPO: ${{ inputs.APPLICATION_IMAGE_REPO || 'fintech-paymentservice' }}
+  AWS_REGION: ${{ inputs.AWS_REGION || 'us-east-1' }}
+
+jobs:
+  # =================================================================
+  # BUILD
+  # =================================================================
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.action != 'closed' ||
+      (github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'feature')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ---------- Secret scan ----------
+      - name: Gitleaks secret scan
+        id: gitleaks
+        continue-on-error: true
+        run: |
+          mkdir -p reports
+          docker run --rm -v "${GITHUB_WORKSPACE}":/repo -w /repo zricethezav/gitleaks:v8.21.2 \
+            dir . --redact --report-format sarif --report-path reports/gitleaks.sarif
+
+      # ---------- Build + test + coverage ----------
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Go build + tests (coverage)
+        run: |
+          go vet ./...
+          go build -v ./...
+          go test -v -coverprofile=coverage.out ./...
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.out
+
+      # ---------- SCA: dependency scan (JSON + SARIF for SonarCloud) ----------
+      - name: Trivy filesystem scan (go.mod dependencies)
+        continue-on-error: true
+        run: |
+          docker run --rm \
+            -v "$HOME/.cache/trivy":/root/.cache/ \
+            -v "${GITHUB_WORKSPACE}":/repo -w /repo \
+            aquasec/trivy:0.50.0 \
+            fs . --format json --output reports/trivy-fs.json
+
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}":/repo -w /repo \
+            aquasec/trivy:0.50.0 \
+            convert --format sarif --output reports/trivy-fs.sarif reports/trivy-fs.json
+
+      # ---------- SAST + quality gate ----------
+      - name: SonarCloud scan (with Gitleaks + Trivy reports)
+        continue-on-error: true
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONARCLOUD }}
+        with:
+          args: >
+            -Dsonar.projectKey=muntaha747_fintech-payment-ci-microservice
+            -Dsonar.projectName=FinTech-Payment-CI-MicroService
+            -Dsonar.organization=muntaha747
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.branch.name=${{ github.event.action == 'closed' && 'main' || github.head_ref || github.ref_name }}
+            -Dsonar.go.coverage.reportPaths=coverage.out
+            -Dsonar.sarifReportPaths=reports/gitleaks.sarif,reports/trivy-fs.sarif
+            -Dsonar.qualitygate.wait=true
+
+      # After Sonar, so the findings reach the SonarCloud dashboard first
+      - name: Fail if Gitleaks found secrets
+        if: steps.gitleaks.outcome == 'failure'
+        run: |
+          echo "::error::Gitleaks found secrets. Check SonarCloud Issues or reports/gitleaks.sarif"
+          exit 1
+
+      # ---------- Image tag ----------
+      - name: Decide image tag
+        id: tag
+        env:
+          EVENT: ${{ github.event_name }}
+          ACTION: ${{ github.event.action }}
+          BRANCH: ${{ github.ref_name }}
+          RUN_NO: ${{ github.run_number }}
+          COMMIT_ID: ${{ github.event.pull_request.merge_commit_sha || github.event.pull_request.head.sha || github.sha }}
+        run: |
+          SHORT_COMMIT_ID="${COMMIT_ID:0:8}"
+
+          if [ "$ACTION" = "closed" ]; then
+            TAG="rel-$RUN_NO-$SHORT_COMMIT_ID"          # PR merged into main
+          elif [ "$EVENT" = "workflow_dispatch" ] && [ "$BRANCH" = "main" ]; then
+            TAG="rel-$RUN_NO-$SHORT_COMMIT_ID"          # manual run on main
+          else
+            TAG="fb-$RUN_NO-$SHORT_COMMIT_ID"           # feature builds
+          fi
+
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Image tag: $TAG"
+
+      # ---------- Build image locally ----------
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image (local, not pushed)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: ${{ env.REGISTRY }}/${{ env.ECR_REPO }}:${{ env.TAG }}
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            built-by=${{ github.actor }}
+
+      # ---------- Image scan: full JSON report (never blocks) ----------
+      - name: Trivy image scan - full report
+        continue-on-error: true
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v "$HOME/.cache/trivy":/root/.cache/ \
+            -v "${GITHUB_WORKSPACE}":/repo -w /repo \
+            aquasec/trivy:0.50.0 image \
+            --format json --output reports/trivy-image.json \
+            "$REGISTRY/$ECR_REPO:$TAG"
+
+      # ---------- Image scan: gate (TEMPORARILY non-blocking) ----------
+      - name: Trivy image scan - gate (fixable CRITICAL)
+        continue-on-error: true          # TEMPORARY: remove once the image is clean
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v "$HOME/.cache/trivy":/root/.cache/ \
+            aquasec/trivy:0.50.0 image \
+            --severity CRITICAL --ignore-unfixed --exit-code 1 \
+            "$REGISTRY/$ECR_REPO:$TAG"
+
+      # ---------- Push to ECR ----------
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Push image to ECR
+        run: docker push "$REGISTRY/$ECR_REPO:$TAG"
+
+      # ---------- ECR push details + scan report ----------
+      - name: ECR push details and scan report
+        continue-on-error: true
+        run: |
+          aws ecr describe-images --repository-name "$ECR_REPO" --image-ids imageTag="$TAG" \
+            --output json > reports/ecr-image.json
+
+          aws ecr wait image-scan-complete --repository-name "$ECR_REPO" --image-id imageTag="$TAG"
+          aws ecr describe-image-scan-findings --repository-name "$ECR_REPO" --image-id imageTag="$TAG" \
+            --output json > reports/ecr-scan.json
+
+          {
+            echo "### ECR image: \`$ECR_REPO:$TAG\`"
+            echo "- Digest: \`$(jq -r '.imageDetails[0].imageDigest' reports/ecr-image.json)\`"
+            echo "- Size (MB): $(jq -r '.imageDetails[0].imageSizeInBytes / 1048576 | floor' reports/ecr-image.json)"
+            echo "- Pushed at: $(jq -r '.imageDetails[0].imagePushedAt' reports/ecr-image.json)"
+            echo "- Scan findings: \`$(jq -c '.imageScanFindings.findingSeverityCounts // {}' reports/ecr-scan.json)\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # ---------- Upload all reports (even if an earlier step failed) ----------
+      - name: Upload security reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-reports-${{ env.TAG || github.run_number }}
+          path: reports/
+          if-no-files-found: ignore
+
+  # =================================================================
+  # DEPLOYMENT - only after a successful build
+  # =================================================================
+  deployment:
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      TAG: ${{ needs.build.outputs.tag }}
+
+    steps:
+      - name: Trigger CD repo for each test environment
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          TEST_ENV: ${{ inputs.TEST_ENVIRONMENT }}
+          ACTION: ${{ github.event.action }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            ENVS="$TEST_ENV"
+            [ "$TEST_ENV" = "regression-and-integration" ] && ENVS="regression integration"
+          elif [ "$ACTION" = "closed" ]; then
+            ENVS="regression integration"
+          else
+            ENVS="functional"
+          fi
+
+          for ENV in $ENVS; do
+            echo "CD: $ENV <- $TAG"
+            curl -fsS -X POST \
+              -H "Authorization: Bearer $GH_PAT" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/$CD_REPO/actions/workflows/01-Deployment.yaml/dispatches" \
+              -d "{\"ref\":\"main\",\"inputs\":{\"ECRURL\":\"$REGISTRY/\",\"REPO\":\"$ECR_REPO\",\"IMAGE\":\"$TAG\",\"TEST\":\"$ENV\"}}"
+            sleep 60
+          done

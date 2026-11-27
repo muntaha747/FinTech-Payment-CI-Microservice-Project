@@ -1,159 +1,93 @@
-<div align="center">
+# golang
 
-<img src="https://raw.githubusercontent.com/muntaha747/muntaha747/master/docs/diagrams/architecture-cicd-v14.svg" width="100%" alt="FinTech Enterprise regional architecture with CI/CD: Edge, App, Data and Ops VPCs, plus the pipelines for Ledger, Notification, Payment, Fraud and BFF"/>
 
-</div>
 
-# Payment Service · CI Build Pipeline (`FinTech-Payment-CI-Microservice-Project`)
+## Getting started
 
-> **Programming language: Go.** This is a **Payment Service** microservice (the Java Spring Boot services are the Ledger; this service is written in Go).
+To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
-This repo is the **CI side** of the Payment Service: it builds the Go code, runs the tests, scans the code and the image, pushes the image to Amazon ECR, and then hands over to the CD repo `FinTech-Payment-CD-Microservice-Project`.
+Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
 
-> Status: **planned**. The pipeline below is the design this repo will follow. No workflow file is committed yet.
+## Add your files
 
----
+* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
+* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
 
-## At a Glance
+```
+cd existing_repo
+git remote add origin https://gitlab.com/wezvaprojects/buildpipeline/backend/golang.git
+git branch -M main
+git push -uf origin main
+```
 
-| Item | Value |
-|---|---|
-| Service | Payment Service |
-| Language | Go |
-| Repo role | CI (build, test, scan, push) |
-| Companion repo | `FinTech-Payment-CD-Microservice-Project` |
-| Steps | 12 |
-| Tools | 12 |
-| Diagrams | 12 animated diagrams in `docs/diagrams/` |
+## Integrate with your tools
 
----
+* [Set up project integrations](https://gitlab.com/wezvaprojects/buildpipeline/backend/golang/-/settings/integrations)
 
-## Diagram Gallery
+## Collaborate with your team
 
-Each diagram is an animated SVG in `docs/diagrams/`. The moving dots show data flowing along the arrows. Each one has a short explanation.
+* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
+* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
+* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
+* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
+* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
 
-### 01 · Branch lifecycle
+## Test and Deploy
 
-![Branch lifecycle](docs/diagrams/01-branch-lifecycle.svg)
+Use the built-in continuous integration in GitLab.
 
-**What it shows:** Shows how a change moves from `feature` to `main`. Feature pushes deploy `fb-` builds to Functional. A PR runs the pipeline again. A merge runs it on main and deploys `rel-` builds to Regression and Integration.
+* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
+* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
+* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
+* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
+* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
 
-### 02 · Pipeline overview
+***
 
-![Pipeline overview](docs/diagrams/02-pipeline-overview.svg)
+# Editing this README
 
-**What it shows:** All 12 steps as one flow. Each box is one stage, with the tool used for it.
+When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
 
-### 03 · Checkout and secret scan
+## Suggestions for a good README
 
-![Checkout and secret scan](docs/diagrams/03-checkout-secret-scan.svg)
+Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
 
-**What it shows:** The first gate. Gitleaks runs on the checked-out files. A finding fails the job before anything is built.
+## Name
+Choose a self-explaining name for your project.
 
-### 04 · Build and tests
+## Description
+Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
 
-![Build and tests](docs/diagrams/04-build-and-tests.svg)
+## Badges
+On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
 
-**What it shows:** The Go build, unit tests and integration tests. Integration tests use a real dependency in a container, not a mock.
+## Visuals
+Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
 
-### 05 · Coverage
+## Installation
+Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
 
-![Coverage](docs/diagrams/05-coverage.svg)
+## Usage
+Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
-**What it shows:** The test run records coverage, the report is uploaded as an artifact, and SonarCloud reads it for the dashboard.
+## Support
+Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
 
-### 06 · Dependency scan (Trivy SCA)
+## Roadmap
+If you have ideas for releases in the future, it is a good idea to list them in the README.
 
-![Dependency scan (Trivy SCA)](docs/diagrams/06-sca-trivy.svg)
+## Contributing
+State if you are open to contributions and what your requirements are for accepting them.
 
-**What it shows:** Trivy checks dependency files for known CVEs. Results are saved as JSON and converted to SARIF for SonarCloud. Report only today.
+For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
 
-### 07 · SAST and quality gate
+You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
 
-![SAST and quality gate](docs/diagrams/07-sast-quality-gate.svg)
+## Authors and acknowledgment
+Show your appreciation to those who have contributed to the project.
 
-**What it shows:** SonarCloud analyses the code. The quality gate result decides whether the change is ready for main.
+## License
+For open source projects, say how it is licensed.
 
-### 08 · Image build
-
-![Image build](docs/diagrams/08-image-build.svg)
-
-**What it shows:** Docker Buildx builds a small image. It runs as a non-root user with no login shell.
-
-### 09 · Image scan
-
-![Image scan](docs/diagrams/09-image-scan.svg)
-
-**What it shows:** Trivy scans the local image before it is pushed. The gate fails only on fixable CRITICAL CVEs and is non-blocking for now.
-
-### 10 · ECR push and scan
-
-![ECR push and scan](docs/diagrams/10-ecr-push-and-scan.svg)
-
-**What it shows:** Logs in to ECR, pushes the image and reads the ECR scan-on-push report. The report is saved as an artifact.
-
-### 11 · Routing to environments
-
-![Routing to environments](docs/diagrams/11-cd-trigger-routing.svg)
-
-**What it shows:** After a successful build, the pipeline picks environments from the event: feature → functional, merged PR → regression and integration, manual → the chosen one.
-
-### 12 · Delivery to EKS
-
-![Delivery to EKS](docs/diagrams/12-gitops-handoff-eks.svg)
-
-**What it shows:** The CD repo commits the new image tag. Argo CD syncs it to EKS, and the Payment Service pods roll out with the new image.
-
----
-
-## Steps
-
-| # | Step | What it does | Tool |
-|---|---|---|---|
-| 1 | Checkout | Downloads the code with full Git history | actions/checkout@v4 |
-| 2 | Secret scan | Finds passwords and keys in the repo files. A finding fails the build | Gitleaks |
-| 3 | Build and tests | Builds the Go service, runs unit and integration tests (real dependency in a container) | Go toolchain, test runner, Testcontainers |
-| 4 | Coverage | Measures which lines the tests run and uploads the report | Coverage tool (JaCoCo-style XML) |
-| 5 | SCA scan | Checks dependencies for known CVEs (report only) | Trivy (filesystem) |
-| 6 | Trivy gate | Fails on fixable CRITICAL CVEs in the image (non-blocking for now) | Trivy (image) |
-| 7 | SAST | Static analysis for bugs and security issues | SonarCloud |
-| 8 | Quality gate | Pass or fail rules on the SonarCloud analysis | SonarCloud quality gate |
-| 9 | Image build | Builds a small container image that runs as a non-root user | Docker Buildx |
-| 10 | Image scan | Scans the image; full report never blocks | Trivy (image) |
-| 11 | ECR push and scan | Logs in to ECR, pushes the image, reads the scan-on-push result | AWS CLI, Amazon ECR |
-| 12 | Trigger CD | Starts `deploy.yml` in the CD repo for the right environments | GitHub REST API + PAT |
-
----
-
-## Tool Stack
-
-| # | Tool | Category | What it does here |
-|---|---|---|---|
-| 1 | **GitHub Actions** | CI orchestration | Runs the steps in order, on push, PR and merge |
-| 2 | **Gitleaks** | Secret scanning | Stops secrets reaching main |
-| 3 | **Go toolchain** | Build and test | Compiles and tests the Payment Service |
-| 4 | **Testcontainers** | Integration tests | Starts a real dependency in a throwaway container |
-| 5 | **Coverage tool** | Code coverage | Shows which code the tests run |
-| 6 | **Trivy (filesystem)** | SCA | Known CVEs in dependency files |
-| 7 | **SonarCloud** | SAST + quality gate | Bugs, vulnerabilities, hotspots, coverage rules |
-| 8 | **Docker Buildx** | Image build | Builds the container image |
-| 9 | **Trivy (image)** | Container scan | CVEs inside the image |
-| 10 | **Amazon ECR** | Registry + scan | Private image storage and scan-on-push |
-| 11 | **AWS CLI + jq** | Reporting | Reads ECR results and writes the run summary |
-| 12 | **GitHub REST API + PAT** | Cross-repo trigger | Starts `deploy.yml` in `FinTech-Payment-CD-Microservice-Project` |
-
----
-
-## Interview Talking Points
-
-- Shift left: secrets, dependencies and code are checked before the image is built.
-- Build once, deploy many: one image per run, promoted by tag.
-- Traceability: the tag holds the run number and commit SHA.
-- CI and CD are separate: this repo builds and scans, the CD repo deploys through Argo CD.
-
----
-
-## Related Repos
-
-- Companion repo: `FinTech-Payment-CD-Microservice-Project`
-- Ledger service (Java Spring Boot) pipeline: `FinTech-Ledger-CI-MicroService-Project` and `FinTech-Ledger-CD-Microservice-Project`
+## Project status
+If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
